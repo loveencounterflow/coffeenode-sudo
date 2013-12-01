@@ -1,3 +1,28 @@
+
+Just a quick fork to patch `node-sudo` so that now you can retrieve the password
+(here shown in CoffeeScript):
+
+```coffeescript
+sudo = require 'coffeenode-sudo'
+
+options =
+  cachePassword:  no
+  prompt:         "Password, yo? "
+  spawnOptions:   {} # other options for spawn
+
+# assuming the file is only readable to root:
+# -rw-r-----   1 root        wheel   16  1 Dez 01:23 forbidden
+
+child = sudo [ 'cat', '/tmp/forbidden', ], options, ( error, password ) ->
+  console.log "the password is:", password
+
+child.stdout.on 'data', ( data ) ->
+  console.log data.toString()
+```
+
+The handler will be called when the process has finished.
+
+
 node-sudo
 =========
 
